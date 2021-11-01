@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _generatePositions(BuildContext context) {
     left = _placeGenerator.generateLeft(MediaQuery.of(context).size.width);
-    top = _placeGenerator.generateTop(MediaQuery.of(context).size.height);
+    top = _placeGenerator.generateTop(MediaQuery.of(context).size.height - 75);
   }
 
   @override
