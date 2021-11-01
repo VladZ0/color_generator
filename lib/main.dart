@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:color_generator/color_generator.dart';
+import 'package:color_generator/place_generator.dart';
+import 'package:color_generator/random_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -34,6 +36,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   BoxDecoration? _decoration;
   final _generator = ColorGenerator();
+  final _placeGenerator = PlaceGenerator();
+
+  double? left;
+  double? top;
 
   @override
   void initState() {
@@ -41,27 +47,31 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  void _generateColor() {
+  void _generateColor(BuildContext context) {
+    _generatePositions(context);
     setState(() {
       _decoration = BoxDecoration(color: _generator.generateColor());
     });
   }
 
+  void _generatePositions(BuildContext context) {
+    left = _placeGenerator.generateLeft(MediaQuery.of(context).size.width);
+    top = _placeGenerator.generateTop(MediaQuery.of(context).size.height);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _generateColor,
+      onTap: () => _generateColor(context),
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: _decoration,
-            child: const Center(
-                child: Text("Hey there",
-                    style: TextStyle(fontSize: 25, color: Colors.black)))),
+        body: RandomWidget(
+          decoration: _decoration,
+          left: left,
+          top: top,
+        ),
       ),
     );
   }
